@@ -7,18 +7,10 @@
 
 import SwiftUI
 
-enum Move {
+enum Move: String {
     case rock
     case paper
     case scissors
-
-    var emoji: String {
-        switch self {
-        case .rock: return "🪨"
-        case .paper: return "📃"
-        case .scissors: return "✂️"
-        }
-    }
 
     var supersededBy: Move {
         switch self {
@@ -82,25 +74,13 @@ struct PossibleMoves: View {
 
     var body: some View {
         HStack {
-            Button(action: {
-                tapHandler(.rock)
-            }) {
-                Move.rock.image
-                    .frame(width: 120, height: 200, alignment: .center)
-            }
-
-            Button(action: {
-                tapHandler(.paper)
-            }) {
-                Move.paper.image
-                    .frame(width: 120, height: 200, alignment: .center)
-            }
-
-            Button(action: {
-                tapHandler(.scissors)
-            }) {
-                Move.scissors.image
-                    .frame(width: 120, height: 200, alignment: .center)
+            ForEach(Move.all, id: \.self) { move in
+                Button(action: {
+                    tapHandler(move)
+                }) {
+                    move.image
+                        .frame(width: 80, height: 200, alignment: .center)
+                }
             }
         }
     }
@@ -115,10 +95,10 @@ struct Game: View {
         VStack {
             Text("\(shouldWin ? "Win" : "Loose") against")
                 .applyGameTextStyle()
-                .font(.title2.bold())
+                .font(.title3.bold())
                 .opacity(0.7)
             randomMove.image
-                .frame(width: 300, height: 300, alignment: .center)
+                .frame(width: 180, height: 200, alignment: .center)
             PossibleMoves(tapHandler: tapHandler)
         }
     }
